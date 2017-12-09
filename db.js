@@ -1,39 +1,151 @@
-if (process.env.NODE_ENV == 'production') {
-  /*=========================*\
-  ||    PRODUCTION CONFIG    ||
-  \*=========================*/
+const { Pool } = require('pg');
 
-  throw Error('Production environment is not yet configured.');
+let config = {
+  max: 10,
+};
 
-  // const { Pool } = require('pg');
+if (process.env.NODE_ENV !== 'production') {
+  const secrets = require('./secrets.json');
 
-  // const pool = new Pool({
-  //   host: ,
-  //   user: 'scc-slc-user',
-  //   max: 10,
-  //   idleTimeoutMillis: 30000,
-  //   connectionTimeoutMillis: 2000,
-  // });
+  config = Object.assign(config, secrets);
+}
 
-  // exports.query = async function(q, vals) {
-  //   const client = await pool.connect();
-  //   const result = await client.query(q, vals);
-  //   client.release();
+console.log(config);
 
-  //   return result;
-  // };
-} else {
-  /*========================*\
-  ||   DEVELOPMENT CONFIG   ||
-  \*========================*/
+// Pool configures itself using environment variables
+const db = new Pool(config);
 
-  const sqlite = require('sqlite3').verbose();
-  const db = new sqlite.Database('dev.db');
+async function query(q, vals) {
+  const client = await db.connect();
+  const result = await client.query(q, vals);
+  client.release();
 
-  exports.query = async function(q, vals) {
-    const stmt = db.prepare(q);
-    const result = stmt.run(vals);
-    stmt.finalize();
-    return result;
+  return result;
+};
+
+/*===============================*\
+||        Query Builders         ||
+\*===============================*/
+
+function insertQueryFor(table, data) {
+  // Generates an insert query to be used with the query function.
+
+  let statement = 'INSERT INTO ' + table + ' (';
+  let fields = [];
+  let values = [];
+  let count = 1;
+
+  let vals = [];
+
+  for (const key in data) {
+    fields.push(key);
+    values.push('$' + count);
+    vals.push(data[key]);
+    count += 1;
+  }
+
+  statement += fields.join(', ') + ') VALUES (' + values.join(', ') + ')';
+
+  return {
+    statement,
+    values: vals,
+  };
+}
+
+function updateQueryFor(table, data, where) {
+  let statement = 'UPDATE ' + table + ' SET ';
+  let fields = [];
+  let count = 1;
+
+  let vals = [];
+
+  for (const key in data) {
+    if (data[key]) {
+      fields.push(`${key} = ${'$' + count}`);
+      vals.push(data[key]);
+      count += 1;
+    }
+  }
+
+  statement += fields.join(', ');
+
+  // Turn a where object into a string.
+  if (where && typeof where === 'object') {
+    let w = [];
+    for (const key in where) {
+      w.push(`${key} = '${where[key]}'`);
+    }
+    statement += ' WHERE ' + w.join(', ');
+  }
+
+  return {
+    statement,
+    values: vals,
+  };
+}
+
+/*===============================*\
+||    User Management Helpers    ||
+\*===============================*/
+
+async function userExists(email) {
+  const result = await query('SELECT * FROM users WHERE email = $1', [ email ]);
+  return result.rows.length > 0;
+}
+
+async function createOrUpdateUser(data) {
+  if (await userExists(data.email)) {
+    const q = updateQueryFor('users', data, { email: data.email });
+    await query(q.statement, q.values);
+  } else {
+    await query('INSERT INTO users (name, email, phone) VALUES ($1, $2, $3)', [
+      data.name,
+      data.email,
+      data.phone
+    ]);
+  }
+
+  const user = await query('SELECT * FROM users WHERE email = $1 LIMIT 1', [ data.email ]);
+
+  if (user.rows.length > 0) {
+    return user.rows[0];
+  } else {
+    return null;
   }
 }
+
+async function userIsInGroup(group, userID) {
+
+}
+
+/*===============================*\
+||   Project Management Helpers  ||
+\*===============================*/
+
+async function createProject(data) {
+  const { statement, values } = insertQueryFor('projects', data);
+  await query(statement, values);
+  const project = query('SELECT * FROM projects WHERE name = $1 LIMIT 1', [ data.name ]);
+
+  console.log(project);
+
+  if (project.rows && project.rows.length > 0) {
+    return project.rows[0];
+  } else {
+    return null;
+  }
+}
+
+module.exports = {
+  query,
+  insertQueryFor,
+  updateQueryFor,
+
+  // Users
+  userExists,
+  createOrUpdateUser,
+  userIsInGroup,
+
+  // Projects
+  createProject,
+};

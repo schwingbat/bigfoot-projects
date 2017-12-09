@@ -9,6 +9,8 @@ const getTemplate = (filename) => fs.readFileSync(
 
 const templates = {
   info: hbs.compile(getTemplate('info.hbs')),
+  newProject: hbs.compile(getTemplate('new.hbs')),
+  projectIndex: hbs.compile(getTemplate('project-index.hbs')),
   project: hbs.compile(getTemplate('project.hbs')),
   projectNotFound: hbs.compile(getTemplate('project-not-found.hbs')),
 };
@@ -19,9 +21,35 @@ router.get('/', (req, res) => {
   return res.send(templates.info());
 });
 
-router.get('/project/:id', (req, res) => {
+router.get('/projects', async (req, res) => {
+  const projects = await db.query('SELECT * FROM projects');
+
+  const data = {
+    projects: projects.rows || []
+  };
+
+  console.log(data);
+
+  res.send(templates.projectIndex(data));
+});
+
+router.get('/projects/new', async (req, res) => {
+  console.log('running /projects/new')
+
+  const formats = await db.query('SELECT * FROM formats');
+
+  const data = {
+    formats: formats.rows
+  };
+
+  return res.send(templates.newProject(data));
+});
+
+router.get('/projects/:id', async (req, res) => {
+  console.log('running /projects/:id')
+
   // Show the status of a particular project
-  const project = db.query('SELECT * FROM projects WHERE id = $1 LIMIT 1', req.query.id);
+  const project = await db.query('SELECT * FROM projects WHERE id = $1 LIMIT 1', req.query.id);
 
   if (project) {
     return res.send(templates.project());
@@ -30,11 +58,37 @@ router.get('/project/:id', (req, res) => {
   }
 });
 
-router.post('/project', (req, res) => {
+router.post('/projects/new', async (req, res) => {
   // Submit a project
+
+  const { body } = req;
+
+  console.log(body);
+
+  const user = await db.createOrUpdateUser({
+    name: body['user-name'],
+    email: body['user-email'],
+    phone: body['user-phone']
+  });
+
+  const projectData = {
+    name: body['project-name'],
+    details: body['project-details'],
+    due_date: new Date(body['project-due-date']),
+    event_date: new Date(body['project-event-date']),
+    user_id: user.id
+  };
+
+  const project = await db.createProject(projectData);
+
+  if (project && project.id != null) {
+    res.redirect(`/graphics/projects/${project.id}`);
+  } else {
+    res.redirect('/graphics/projects');
+  }
 });
 
-router.post('/project/:id/edit', (req, res) => {
+router.post('/projects/:id/edit', (req, res) => {
   // Change info or details about an existing project.
 });
 

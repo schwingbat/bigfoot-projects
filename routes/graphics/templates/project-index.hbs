@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bigfoot Marketing / Graphics</title>
+    {{>head}}
+  </head>
+
+  <body>
+    {{>header}}
+
+    <ul>
+      {{#each projects}}
+        <li>{{name}} &mdash; {{details}}</li>
+      {{/each}}
+    </ul>
+
+    {{>footer}}
+  </body>
+</html>
