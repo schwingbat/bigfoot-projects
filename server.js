@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const db = require('./db');
+const db = require('db');
 const mountRoutes = require('./routes');
 const PORT = process.env.PORT || 5150;
 
@@ -41,6 +41,8 @@ app.use(passport.session());
 
 mountRoutes(app);
 
-app.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`);
+db.migrate.latest().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Running on port ${PORT}`);
+  });
 });

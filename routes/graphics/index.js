@@ -1,7 +1,8 @@
 const path = require('path');
 const router = require('express').Router();
 const loadTemplates = require('utils/load-templates');
-const db = require('db');
+const User = require('models/user');
+const Project = require('models/project');
 
 const templates = loadTemplates(path.join(__dirname, 'templates'));
 
@@ -12,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/projects', async (req, res) => {
-  const projects = await db.query('SELECT * FROM projects');
+  const projects = await knex('projects').select('*');
 
   const data = {
     projects: projects.rows || []
