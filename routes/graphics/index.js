@@ -1,19 +1,9 @@
-const fs = require('fs');
 const path = require('path');
 const router = require('express').Router();
-const hbs = require('../../hbs');
-const db = require('../../db');
+const loadTemplates = require('utils/load-templates');
+const db = require('db');
 
-const getTemplate = (filename) => fs.readFileSync(
-  path.join(__dirname, 'templates', filename), 'utf8');
-
-const templates = {
-  info: hbs.compile(getTemplate('info.hbs')),
-  newProject: hbs.compile(getTemplate('new.hbs')),
-  projectIndex: hbs.compile(getTemplate('project-index.hbs')),
-  project: hbs.compile(getTemplate('project.hbs')),
-  projectNotFound: hbs.compile(getTemplate('project-not-found.hbs')),
-};
+const templates = loadTemplates(path.join(__dirname, 'templates'));
 
 router.get('/', (req, res) => {
   // Graphics request info and about page
