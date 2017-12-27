@@ -1,0 +1,8 @@
+input[type="text"],
+input[type="password"] {
+  border: 1px solid darken($background-color, 20%);
+  background-color: transparent;
+  width: 100%;
+  color: $text-color;
+  padding: 0.5em;
+}
