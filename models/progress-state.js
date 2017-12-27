@@ -1,5 +1,8 @@
-const { Model } = require('db/bookshelf');
+const bookshelf = require('db/bookshelf');
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('ProgressState', {
   tableName: 'progress_states',
+  projects() {
+    return this.hasMany('Project');
+  }
 });

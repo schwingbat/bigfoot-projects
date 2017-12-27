@@ -40,7 +40,7 @@ app.use(sass({
   dest: path.join(__dirname, 'public'),
   debug: true,
 }));
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'not-very-secret' }));
 app.use(passport.initialize());
 app.use(passport.session());

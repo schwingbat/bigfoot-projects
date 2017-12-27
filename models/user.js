@@ -1,13 +1,13 @@
 const bcrypt = require('bcrypt');
-const { Model } = require('db/bookshelf');
-const { Project } = require('models');
+const bookshelf = require('db/bookshelf');
 
 const saltRounds = 10;
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('User', {
   tableName: 'users',
+  hasTimestamps: true,
   projects() {
-    return this.hasMany(Project);
+    return this.hasMany('Project');
   },
   authenticate(password) {
     return new Promise((resolve, reject) => {

@@ -1,9 +1,9 @@
-const { Model } = require('db/bookshelf');
-const { Project } = require('models');
+const bookshelf = require('db/bookshelf');
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('Attachment', {
   tableName: 'attachments',
+  hasTimestamps: true,
   project() {
-    return this.hasOne(Project);
+    return this.belongsTo('Project');
   },
 });

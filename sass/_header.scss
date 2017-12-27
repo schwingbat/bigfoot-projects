@@ -16,7 +16,7 @@
 .mobile-nav-toggle {
   width: 32px;
   height: 32px;
-  background-color: red;
+  background-color: darken($background-color, 10%);
   border-radius: 50%;
 
   @media (min-width: $md) {

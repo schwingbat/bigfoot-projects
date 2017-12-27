@@ -1,5 +1,5 @@
-const { Model } = require('db/bookshelf');
+const bookshelf = require('db/bookshelf');
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('Format', {
   tableName: 'formats',
 });

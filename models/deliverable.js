@@ -1,12 +1,11 @@
-const { Model } = require('db/bookshelf');
-const { Project, Format } = require('models');
+const bookshelf = require('db/bookshelf');
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('Deliverable', {
   tableName: 'deliverables',
   project() {
-    return this.hasOne(Project);
+    return this.hasOne('Project');
   },
   format() {
-    return this.hasOne(Format);
+    return this.hasOne('Format');
   }
 });

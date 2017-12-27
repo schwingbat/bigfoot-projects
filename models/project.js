@@ -1,24 +1,18 @@
-const db = require('db');
-const { Model } = require('db/bookshelf');
-const {
-  User,
-  Attachment,
-  Deliverable,
-  ProgressState
-} = require('models');
+const bookshelf = require('db/bookshelf');
 
-module.exports = Model.extend({
+module.exports = bookshelf.model('Project', {
   tableName: 'projects',
+  hasTimestamps: true,
   owner() {
-    return this.hasOne(User);
+    return this.belongsTo('User');
   },
   attachments() {
-    return this.hasMany(Attachment);
+    return this.hasMany('Attachment');
   },
   deliverables() {
-    return this.hasMany(Deliverable);
+    return this.hasMany('Deliverable');
   },
-  status() {
-    return this.hasOne(ProgressState);
+  progressState() {
+    return this.hasOne('ProgressState', 'id');
   },
 });
