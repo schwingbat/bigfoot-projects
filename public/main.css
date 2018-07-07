@@ -1,0 +1,204 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0; }
+
+body {
+  background-color: #eeeade;
+  color: #000; }
+
+a {
+  color: #4A3C15; }
+
+main {
+  padding: 1em 0; }
+  @media (min-width: 600px) {
+    main {
+      padding: 1em; } }
+
+.page-header {
+  padding: 1em;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between; }
+
+.logo-text {
+  font-size: 1.4em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #000; }
+
+.mobile-nav-toggle {
+  width: 32px;
+  height: 32px;
+  background-color: #ddd5bc;
+  border-radius: 50%; }
+  @media (min-width: 600px) {
+    .mobile-nav-toggle {
+      display: none; } }
+
+.main-nav {
+  display: none;
+  flex-basis: 100%;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 1em; }
+  .main-nav.active {
+    display: flex; }
+  @media (min-width: 600px) {
+    .main-nav {
+      margin: 0;
+      padding: 0 1em;
+      display: flex;
+      flex-basis: unset;
+      flex-direction: row; } }
+
+.main-nav a {
+  padding: 0.75em 0; }
+  .main-nav a.active {
+    color: #BB3648;
+    font-weight: bold;
+    text-decoration: none; }
+  .main-nav a:not(:last-child) {
+    border-bottom: 1px dotted #cbbf9b; }
+  @media (min-width: 600px) {
+    .main-nav a:not(:last-child) {
+      margin-right: 1em;
+      border: 0; } }
+
+footer {
+  padding: 1em; }
+
+.message {
+  padding: 1em;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center; }
+  .message:not(:last-child) {
+    margin-bottom: 0.5em; }
+
+.message-close {
+  text-decoration: none;
+  font-size: 1.4em;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 50%; }
+
+.message--success {
+  background-color: #4e954b;
+  color: #fff; }
+  .message--success .message-close {
+    color: #2a5129; }
+    .message--success .message-close:hover {
+      background-color: #3c733a;
+      color: #fff; }
+
+.message--warning {
+  background-color: #ffa41c;
+  color: #000; }
+  .message--warning .message-close {
+    color: #b56c00; }
+    .message--warning .message-close:hover {
+      background-color: #e88b00;
+      color: #000; }
+
+.message--error {
+  background-color: #c03535;
+  color: #fff; }
+  .message--error .message-close {
+    color: #701f1f; }
+    .message--error .message-close:hover {
+      background-color: #982a2a;
+      color: #fff; }
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+textarea {
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  outline: 0;
+  width: 100%;
+  color: #000;
+  padding: 0 0.75em;
+  font-family: Georgia, sans-serif;
+  margin-bottom: 1em;
+  border-radius: 4px;
+  font-size: 1em;
+  box-shadow: none; }
+
+input[type] {
+  height: 45px;
+  line-height: 45px; }
+
+form {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  max-width: 1400px; }
+
+form h2 {
+  margin-bottom: 0.5em; }
+  form h2:not(:first-of-type) {
+    margin-top: 1em; }
+
+label {
+  margin-bottom: 0.2em;
+  margin-top: 0.6em;
+  display: block; }
+  label.required:after {
+    content: ' *';
+    color: #c03535; }
+
+.field-description {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9em;
+  font-style: italic;
+  padding: 0 0 0.5em 0; }
+
+.form-section {
+  flex: 1 1 100%;
+  background-color: #fff;
+  padding: 1em;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1em; }
+  @media (min-width: 600px) {
+    .form-section {
+      border-radius: 8px; } }
+  @media (min-width: 900px) {
+    .form-section {
+      padding: 2em; } }
+  @media (min-width: 1100px) {
+    .form-section {
+      flex: 1 1 42%;
+      width: 100%; } }
+
+.form-split-line {
+  display: flex;
+  flex-flow: column nowrap; }
+  @media (min-width: 900px) {
+    .form-split-line {
+      flex-flow: row wrap; }
+      .form-split-line .form-set {
+        flex: 1 1 50%; }
+        .form-split-line .form-set:first-child {
+          padding-right: 1em; }
+        .form-split-line .form-set:last-child {
+          padding-left: 1em; } }
+
+.login-form {
+  max-width: 400px;
+  margin: 0 auto; }
+
+#new-project-form {
+  margin: 0 auto; }

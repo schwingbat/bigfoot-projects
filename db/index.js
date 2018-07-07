@@ -1,5 +1,7 @@
-const config = require('../knexfile.js');
-const env = process.env.NODE_ENV || 'development';
-const knex = require('knex')(config[env]);
-
-module.exports = knex;
+const path = require('path');
+module.exports = require('knex')({
+  client: 'pg',
+  connection: process.env.NODE_ENV === 'production'
+    ? process.env.DATABASE_URL
+    : require(path.join(__dirname, 'secrets.json')),
+});

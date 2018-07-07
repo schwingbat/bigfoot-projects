@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 const Model = require('./Model');
 const knex = require('knex');
+=======
+>>>>>>> e13b56939bafafea475ddabd9d30f301389ed3a1
 const bcrypt = require('bcrypt');
+const bookshelf = require('db/bookshelf');
 
 const saltRounds = 10;
+<<<<<<< HEAD
 const userSchema = {
   id: {
     column: 'id',
@@ -36,14 +41,25 @@ class User extends Model {
     });
   }
 
+=======
+
+module.exports = bookshelf.model('User', {
+  tableName: 'users',
+  hasTimestamps: true,
+  projects() {
+    return this.hasMany('Project');
+  },
+>>>>>>> e13b56939bafafea475ddabd9d30f301389ed3a1
   authenticate(password) {
     return new Promise((resolve, reject) => {
-      bcrypt.hash(password, this.passwordSalt, (err, hash) => {
-        if (err) return reject(err);
-        if (hash === this.passwordHash) {
+      console.log('this is this', this);
+      const hash = this.get('password_hash');
+      bcrypt.compare(password, hash, (err, match) => {
+        if (err) return reject(`There was a problem comparing passwords: ${err.message}`);
+        if (match) {
           return resolve(this);
         } else {
-          return reject(new Error(`Incorrect password.`));
+          return reject(`Passwords did not match.`);
         }
       });
     });
@@ -52,17 +68,22 @@ class User extends Model {
   setPassword(password) {
     return new Promise((resolve, reject) => {
       bcrypt.genSalt(saltRounds, (err, salt) => {
-        if (err) return reject(err);
+        if (err) return reject(`There was a problem setting the password: ${err.message}`);
         bcrypt.hash(password, salt, (err, hash) => {
-          if (err) return reject(err);
-          this.passwordHash = hash;
-          this.passwordSalt = salt;
-
-          return resolve(this);
+          if (err) return reject(`There was a problem setting the password. ${err.message}`);
+          this.set({
+            password_salt: salt,
+            password_hash: hash,
+          });
+          this.save()
+            .then(resolve)
+            .catch(reject);
         });
       });
+      return resolve();
     });
   }
+<<<<<<< HEAD
 
 }
 
@@ -99,3 +120,6 @@ User.create = function(data) {
 }
 
 module.exports = User;
+=======
+});
+>>>>>>> e13b56939bafafea475ddabd9d30f301389ed3a1

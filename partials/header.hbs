@@ -1,3 +1,19 @@
-<header>
-  This is the page header template.
+<header class="page-header">
+  <a href="/" class="logo-text">Bigfoot Marketing</a>
+  <a href="#" class="mobile-nav-toggle"></a>
+  <nav class="main-nav">
+    <a href="/projects/new">Request Graphics</a>
+    <a href="/projects/find">Track a Project</a>
+  </nav>
 </header>
+
+{{#if messages}}
+  <ul class="messages-list">
+  {{#each messages}}
+    <li class="message message--{{type}}">
+      <span class="message-text">{{text}}</span>
+      <a href="#" class="message-close">&times;</a>
+    </li>
+  {{/each}}
+  </ul>
+{{/if}}

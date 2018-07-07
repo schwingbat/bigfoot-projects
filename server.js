@@ -1,10 +1,12 @@
 require('app-module-path').addPath(__dirname);
 
+const path = require('path');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const db = require('db');
+const sass = require('node-sass-middleware');
 const mountRoutes = require('./routes');
 const PORT = process.env.PORT || 5150;
 
@@ -34,7 +36,12 @@ passport.use(new LocalStrategy({
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+app.use(sass({
+  src: path.join(__dirname, 'sass'),
+  dest: path.join(__dirname, 'public'),
+  debug: true,
+}));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({ secret: 'not-very-secret' }));
 app.use(passport.initialize());
 app.use(passport.session());

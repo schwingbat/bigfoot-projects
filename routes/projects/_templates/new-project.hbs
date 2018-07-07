@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bigfoot Marketing / Graphics</title>
+    {{>head}}
+  </head>
+
+  <body>
+    {{>header}}
+
+    <main>
+      <form id="new-project-form" action="/projects/new" method="POST">
+
+        <div class="form-section">
+          <h2>Contact Info</h2>
+
+          <div class="form-split-line">
+            <div class="form-set">
+              <label for="user-name" class="required">Name</label>
+              <input type="text" class="required" name="user-name" placeholder="Skitch">
+            </div>
+
+            <div class="form-set">
+              <label for="user-org" class="required">Club/Organization</label>
+              <input type="text" class="required" name="user-org" placeholder="e.g. Tech Club">
+            </div>
+          </div>
+
+          <div class="form-split-line">
+            <div class="form-set">
+              <label for="user-email" class="required">Email</label>
+              <input type="email" class="required" name="user-email" placeholder="skitch@scc.spokane.edu">
+            </div>
+
+            <div class="form-set">
+              <label for="user-phone">Phone</label>
+              <input type="tel" name="user-phone" placeholder="509-123-4567">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Project Info</h2>
+
+          <div class="form-set">
+            <label for="project-name" class="required">Event/Project Name</label>
+            <input type="text" class="required" name="project-name">
+          </div>
+
+          <div class="form-split-line">
+            <div class="form-set">
+              <label for="project-event-date" class="required">Event Date</label>
+              <input type="date"  class="required" name="project-event-date">
+            </div>
+
+            <div class="form-set">
+              <label for="project-start-time">Event Time</label>
+              <input type="time"  name="project-start-time" placeholder="10:30am">
+            </div>
+          </div>
+
+          <div class="form-split-line">
+            <div class="form-set">
+              <label for="project-location">Location</label>
+              <input type="text"  name="project-location" placeholder="The Lair East Lobby">
+            </div>
+
+            <div class="form-set">
+              <label for="project-due-date">Needed By</label>
+              <input type="date" name="project-due-date">
+            </div>
+          </div>
+
+          <div class="form-set">
+            <label for="project-details">Details</label>
+            <p class="field-description">
+              If your project has specific information, instructions or ideas you'd like us to incorporate, this box will take them:
+            </p>
+            <textarea name="project-details"></textarea>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Formats</h2>
+
+          <div class="formats-list">
+            <select name="formats[]">
+              {{#each formats}}
+                <option value="{{id}}">{{name}} ({{width}}" x {{height}}")</option>
+              {{/each}}
+            </select>
+            <input type="button" value="Add Format">
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Attachments</h2>
+
+          <p class="field-description">
+            If there are any graphics we should include or any other files you want to send us, attach them here.
+          </p>
+
+          <div class="attachments-list">
+            <input type="file" name="attachments[]">
+            <input type="button" value="Add Another Attachment">
+          </div>
+        </div>
+
+        <input type="submit" value="Submit Project">
+      </form>
+    </main>
+
+    {{>footer}}
+  </body>
+</html>

@@ -1,10 +1,15 @@
 const path = require('path');
 const router = require('express').Router();
+<<<<<<< HEAD
 const loadTemplates = require('utils/load-templates');
 const User = require('models/user');
 const Project = require('models/project');
+=======
+const templates = require('utils/load-templates')(__dirname);
+const { Project, Format } = require('models');
+>>>>>>> e13b56939bafafea475ddabd9d30f301389ed3a1
 
-const templates = loadTemplates(path.join(__dirname, 'templates'));
+router.use('/projects', require('./projects'));
 
 router.get('/', (req, res) => {
   // Graphics request info and about page
@@ -12,6 +17,7 @@ router.get('/', (req, res) => {
   return res.send(templates.info());
 });
 
+<<<<<<< HEAD
 router.get('/projects', async (req, res) => {
   const projects = await knex('projects').select('*');
 
@@ -83,4 +89,6 @@ router.post('/projects/:id/edit', (req, res) => {
   // Change info or details about an existing project.
 });
 
+=======
+>>>>>>> e13b56939bafafea475ddabd9d30f301389ed3a1
 module.exports = router;

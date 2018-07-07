@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Find Projects | Bigfoot Marketing</title>
+    {{>head}}
+  </head>
+
+  <body>
+    {{>header}}
+
+    <main>
+      <h1>Current Projects</h1>
+      {{#if email}}
+        <h3>for {{email}}</h3>
+      {{/if}}
+
+      <div class="projects-list">
+        {{#if projects}}
+          {{#each projects}}
+            <div class="project-card">
+              hello
+            </div>
+          {{/each}}
+        {{else}}
+          <span class="greyed-out">No projects at the moment.</span>
+        {{/if}}
+      </div>
+    </main>
+
+    {{>footer}}
+  </body>
+</html>

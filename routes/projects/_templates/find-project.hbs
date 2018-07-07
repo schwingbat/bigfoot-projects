@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Find Projects | Bigfoot Marketing</title>
+    {{>head}}
+  </head>
+
+  <body>
+    {{>header}}
+
+    <main>
+      <form id="search-form">
+        <p>You should have recieved an email with a link to your project when it was submitted. Click that link at any time to check on the status.</p>
+        <p>If you didn't get the email, enter your email address below to see what we're currently working on for you.</p>
+        <input type="email" name="email">
+        <input type="submit" value="Find it!">
+      </form>
+    </main>
+
+    {{>footer}}
+
+    <script>
+      var form = document.getElementById('search-form');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.location = '/projects/' + this.email.value;
+      });
+    </script>
+  </body>
+</html>
